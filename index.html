@@ -57,15 +57,61 @@
   .card.md-only .badge{ background:var(--paper-sunken); color:var(--muted); }
   .card.md-only{ opacity:.72; }
   footer{ margin-top:64px; padding-top:20px; border-top:1px solid var(--line); color:var(--faint); font-size:12.5px; }
+
+  .runner{ margin-bottom:48px; padding:26px 28px; border:1px solid var(--line); border-radius:14px; background:var(--paper-raised); box-shadow:var(--shadow); }
+  .runner h2{ font-family:"Noto Serif KR",serif; font-size:19px; font-weight:600; margin:0 0 6px; }
+  .runner .sub{ color:var(--muted); font-size:14px; margin:0 0 18px; }
+  .runner form{ display:flex; gap:10px; flex-wrap:wrap; }
+  .runner input[type="text"]{ flex:1 1 260px; font:inherit; font-size:15px; padding:11px 14px; border:1px solid var(--line-strong); border-radius:8px; background:var(--paper); color:var(--ink); }
+  .runner input[type="text"]:focus-visible{ outline:2px solid var(--jade); outline-offset:1px; }
+  .runner button{ font:inherit; font-weight:700; font-size:14.5px; padding:11px 22px; border:none; border-radius:8px; background:var(--jade); color:#fff; cursor:pointer; white-space:nowrap; }
+  .runner button:hover{ background:var(--jade-strong); }
+  .runner button:disabled{ background:var(--faint); cursor:not-allowed; }
+  .runner .status{ margin-top:14px; font-family:"JetBrains Mono",monospace; font-size:12.5px; color:var(--muted); display:none; align-items:center; gap:8px; }
+  .runner .status.show{ display:flex; }
+  .runner .status .spinner{ width:12px; height:12px; border-radius:50%; border:2px solid var(--line-strong); border-top-color:var(--jade); animation:spin .8s linear infinite; }
+  @media (prefers-reduced-motion: reduce){ .runner .status .spinner{ animation:none; } }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+  .runner .error{ margin-top:14px; padding:12px 14px; border-radius:8px; background:var(--clay-soft); color:var(--clay); font-size:13.5px; display:none; }
+  .runner .error.show{ display:block; }
+  .result{ margin-bottom:48px; }
+  .result .result-head{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px; flex-wrap:wrap; }
+  .result h2{ font-family:"Noto Serif KR",serif; font-size:17px; font-weight:600; margin:0; }
+  .result .actions{ display:flex; gap:8px; }
+  .result .actions button{ font:inherit; font-size:12.5px; font-weight:600; padding:7px 13px; border:1px solid var(--line-strong); border-radius:7px; background:var(--paper-raised); color:var(--ink); cursor:pointer; }
+  .result .actions button:hover{ border-color:var(--jade); color:var(--jade-strong); }
+  .result iframe{ width:100%; height:80vh; border:1px solid var(--line); border-radius:12px; background:#fff; box-shadow:var(--shadow); }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <div class="eyebrow"><span class="dot"></span>로담한의원 · 키워드 시장조사 아카이브</div>
-    <h1>키워드 리서치 결과물 모음</h1>
-    <p class="lede">로담한의원 키워드/시장/경쟁사 리서치 산출물을 모아둔 페이지입니다. HTML 리포트는 클릭하면 바로 열리고, MD 전용 리포트는 원문(마크다운)으로 열립니다.</p>
+    <div class="eyebrow"><span class="dot"></span>로담한의원 · 키워드 시장조사 대시보드</div>
+    <h1>키워드 리서치 대시보드</h1>
+    <p class="lede">키워드를 입력하면 네이버(블로그·카페·지식iN·지역검색·검색광고)를 실시간으로 조사하고 AI가 로담한의원 노출 현황·갭 분석 리포트를 자동 생성합니다.</p>
   </header>
+
+  <div class="runner">
+    <h2>새 키워드 조사</h2>
+    <p class="sub">예: 대상포진흉터, 여드름흉터, 켈로이드치료 — 조사에는 20~40초 정도 걸립니다.</p>
+    <form id="research-form">
+      <input type="text" id="keyword-input" name="keyword" placeholder="조사할 키워드 입력" maxlength="40" required autocomplete="off">
+      <button type="submit" id="run-btn">조사 시작</button>
+    </form>
+    <div class="status" id="run-status"><span class="spinner"></span><span id="run-status-text">네이버 데이터 수집 중...</span></div>
+    <div class="error" id="run-error"></div>
+  </div>
+
+  <div class="result" id="result-block" style="display:none">
+    <div class="result-head">
+      <h2 id="result-title">조사 결과</h2>
+      <div class="actions">
+        <button type="button" id="btn-open-tab">새 탭에서 열기</button>
+        <button type="button" id="btn-download">HTML 다운로드</button>
+      </div>
+    </div>
+    <iframe id="result-frame" title="조사 결과 리포트"></iframe>
+  </div>
 
   <div class="group">
     <h2>HTML 리포트 (가독성 버전 제공)</h2>
@@ -135,5 +181,81 @@
     researchcompany · keyword-market-research 스킬로 생성된 리포트 모음 · 신규 조사는 outputs/에 추가되는 대로 이 페이지에 카드가 추가됩니다.
   </footer>
 </div>
+<script>
+(function(){
+  var form = document.getElementById('research-form');
+  var input = document.getElementById('keyword-input');
+  var btn = document.getElementById('run-btn');
+  var status = document.getElementById('run-status');
+  var statusText = document.getElementById('run-status-text');
+  var errorBox = document.getElementById('run-error');
+  var resultBlock = document.getElementById('result-block');
+  var resultTitle = document.getElementById('result-title');
+  var frame = document.getElementById('result-frame');
+  var btnOpenTab = document.getElementById('btn-open-tab');
+  var btnDownload = document.getElementById('btn-download');
+  var lastHtml = null;
+  var lastKeyword = null;
+
+  var steps = ['네이버 데이터 수집 중...', 'AI가 리포트 작성 중... (최대 40초 소요)'];
+
+  form.addEventListener('submit', async function(e){
+    e.preventDefault();
+    var keyword = input.value.trim();
+    if(!keyword) return;
+
+    btn.disabled = true;
+    errorBox.classList.remove('show');
+    status.classList.add('show');
+    statusText.textContent = steps[0];
+    var stepTimer = setTimeout(function(){ statusText.textContent = steps[1]; }, 3000);
+
+    try {
+      var res = await fetch('/api/research', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ keyword: keyword })
+      });
+      var data = await res.json();
+      if(!res.ok || data.error){
+        throw new Error(data.error || ('HTTP ' + res.status));
+      }
+      lastHtml = data.html;
+      lastKeyword = data.keyword;
+      resultTitle.textContent = '"' + data.keyword + '" 조사 결과 (' + data.date + ')';
+      frame.srcdoc = data.html;
+      resultBlock.style.display = '';
+      resultBlock.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } catch (err) {
+      errorBox.textContent = '조사 실패: ' + err.message;
+      errorBox.classList.add('show');
+    } finally {
+      clearTimeout(stepTimer);
+      status.classList.remove('show');
+      btn.disabled = false;
+    }
+  });
+
+  btnOpenTab.addEventListener('click', function(){
+    if(!lastHtml) return;
+    var blob = new Blob([lastHtml], { type: 'text/html' });
+    var url = URL.createObjectURL(blob);
+    window.open(url, '_blank');
+  });
+
+  btnDownload.addEventListener('click', function(){
+    if(!lastHtml) return;
+    var blob = new Blob([lastHtml], { type: 'text/html' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = (lastKeyword || 'report') + '_' + new Date().toISOString().slice(0,10) + '.html';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+})();
+</script>
 </body>
 </html>
