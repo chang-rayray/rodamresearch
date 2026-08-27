@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>코라테라피 키워드 시장조사</title>
+<meta name="description" content="로담한의원 '코라테라피' 키워드 온라인 노출 현황 및 경쟁사 분석 (2026-08-25)">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F4F5F0; --paper-raised:#FFFFFF; --paper-sunken:#EBEDE6;
+    --ink:#1B231F; --muted:#5C6960; --faint:#8A968E;
+    --jade:#2F6F5E; --jade-strong:#1F5346; --jade-soft:#E3EEE8;
+    --clay:#B65C38; --clay-soft:#F6E7DE;
+    --line:rgba(27,35,31,.13); --line-strong:rgba(27,35,31,.24);
+    --shadow: 0 1px 2px rgba(20,26,22,.04), 0 8px 24px -12px rgba(20,26,22,.14);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#121613; --paper-raised:#1A211C; --paper-sunken:#0D110E;
+      --ink:#ECEFEA; --muted:#93A199; --faint:#65726A;
+      --jade:#6FC3A6; --jade-strong:#8CD4BA; --jade-soft:rgba(111,195,166,.14);
+      --clay:#E38F63; --clay-soft:rgba(227,143,99,.14);
+      --line:rgba(236,239,234,.14); --line-strong:rgba(236,239,234,.26);
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#121613; --paper-raised:#1A211C; --paper-sunken:#0D110E;
+    --ink:#ECEFEA; --muted:#93A199; --faint:#65726A;
+    --jade:#6FC3A6; --jade-strong:#8CD4BA; --jade-soft:rgba(111,195,166,.14);
+    --clay:#E38F63; --clay-soft:rgba(227,143,99,.14);
+    --line:rgba(236,239,234,.14); --line-strong:rgba(236,239,234,.26);
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+  }
+  *{box-sizing:border-box;}
+  html{background:var(--paper);}
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:"Noto Sans KR","Malgun Gothic",sans-serif; font-size:16px; line-height:1.75; -webkit-font-smoothing:antialiased; }
+  ::selection{ background:var(--jade-soft); color:var(--ink); }
+  a{ color:var(--jade-strong); text-decoration-color:var(--line-strong); text-underline-offset:2px; }
+  a:hover{ color:var(--jade); }
+  a:focus-visible, button:focus-visible, summary:focus-visible{ outline:2px solid var(--jade); outline-offset:2px; border-radius:2px; }
+  .wrap{ max-width:880px; margin:0 auto; padding:0 24px 96px; }
+  .cover{ padding:64px 0 40px; border-bottom:1px solid var(--line); margin-bottom:48px; }
+  .eyebrow{ font-family:"JetBrains Mono",monospace; font-size:12.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--jade); display:flex; align-items:center; gap:10px; margin-bottom:22px; }
+  .eyebrow .dot{ width:6px; height:6px; border-radius:50%; background:var(--jade); flex:none; }
+  h1{ font-family:"Noto Serif KR",serif; font-weight:700; font-size:clamp(30px,5vw,44px); line-height:1.28; letter-spacing:-.01em; margin:0 0 22px; text-wrap:balance; color:var(--ink); }
+  .meta-row{ display:flex; flex-wrap:wrap; gap:10px; margin-bottom:26px; }
+  .chip{ font-family:"JetBrains Mono",monospace; font-size:12.5px; padding:5px 11px; border-radius:100px; border:1px solid var(--line-strong); color:var(--muted); background:var(--paper-raised); white-space:nowrap; }
+  .chip b{ color:var(--ink); font-weight:600; }
+  .lede{ font-size:17.5px; color:var(--muted); max-width:62ch; margin:0; }
+  .toc{ display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:10px; overflow:hidden; margin-bottom:56px; }
+  .toc a{ display:block; background:var(--paper-raised); padding:14px 16px; text-decoration:none; color:var(--ink); font-size:14px; }
+  .toc a:hover{ background:var(--jade-soft); }
+  .toc .n{ font-family:"JetBrains Mono",monospace; color:var(--jade); font-size:12px; display:block; margin-bottom:3px; }
+  section{ margin-bottom:64px; scroll-margin-top:24px; }
+  .sec-head{ display:flex; align-items:baseline; gap:14px; margin-bottom:8px; }
+  .sec-num{ font-family:"JetBrains Mono",monospace; font-size:14px; color:var(--jade); background:var(--jade-soft); border-radius:6px; padding:3px 9px; flex:none; }
+  h2{ font-family:"Noto Serif KR",serif; font-size:26px; font-weight:600; margin:0; letter-spacing:-.005em; text-wrap:balance; }
+  .sec-sub{ color:var(--muted); font-size:15px; margin:6px 0 28px 0; }
+  h3{ font-family:"Noto Sans KR",sans-serif; font-size:16.5px; font-weight:700; margin:36px 0 6px; display:flex; align-items:center; gap:10px; }
+  h3 .tag{ font-family:"JetBrains Mono",monospace; font-weight:500; font-size:11.5px; color:var(--faint); background:var(--paper-sunken); border:1px solid var(--line); padding:2px 7px; border-radius:5px; }
+  .stat-line{ display:inline-flex; align-items:center; gap:8px; font-size:14.5px; padding:7px 13px; border-radius:8px; margin:6px 0 18px; border:1px solid var(--line); }
+  .stat-line.warn{ background:var(--clay-soft); border-color:transparent; color:var(--ink); }
+  .stat-line.ok{ background:var(--jade-soft); border-color:transparent; color:var(--ink); }
+  .stat-line.neutral{ background:var(--paper-sunken); color:var(--muted); }
+  .stat-line b{ font-family:"JetBrains Mono",monospace; }
+  p{ margin:0 0 16px; color:var(--ink); }
+  p.muted, li.muted{ color:var(--muted); }
+  ul, ol{ margin:0 0 16px; padding-left:22px; }
+  li{ margin-bottom:9px; }
+  li::marker{ color:var(--faint); }
+  strong{ font-weight:700; }
+  .table-scroll{ overflow-x:auto; border:1px solid var(--line); border-radius:10px; margin:14px 0 22px; box-shadow:var(--shadow); background:var(--paper-raised); }
+  table{ border-collapse:collapse; width:100%; min-width:520px; font-size:14.5px; }
+  thead th{ text-align:left; font-family:"JetBrains Mono",monospace; font-weight:500; font-size:11.5px; letter-spacing:.04em; text-transform:uppercase; color:var(--muted); background:var(--paper-sunken); padding:11px 16px; border-bottom:1px solid var(--line); white-space:nowrap; }
+  tbody td{ padding:11px 16px; border-bottom:1px solid var(--line); vertical-align:top; }
+  tbody tr:last-child td{ border-bottom:none; }
+  tbody tr:hover td{ background:var(--jade-soft); }
+  td.num, th.num{ font-family:"JetBrains Mono",monospace; font-variant-numeric:tabular-nums; text-align:right; }
+  tr.row-highlight-jade td{ background:var(--jade-soft); }
+  tr.row-highlight-clay td{ background:var(--clay-soft); }
+  .badge{ display:inline-block; font-family:"JetBrains Mono",monospace; font-size:12px; font-weight:700; padding:2px 8px; border-radius:5px; }
+  .badge.high{ background:var(--jade-soft); color:var(--jade-strong); }
+  .badge.zero{ background:var(--clay-soft); color:var(--clay); }
+  .badge.low{ background:var(--paper-sunken); color:var(--muted); }
+  .callout{ border-radius:10px; padding:18px 20px; margin:18px 0 24px; border-left:3px solid var(--jade); background:var(--jade-soft); }
+  .callout.warn{ border-left-color:var(--clay); background:var(--clay-soft); }
+  .callout .callout-label{ font-family:"JetBrains Mono",monospace; font-size:11.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--jade-strong); margin-bottom:8px; display:block; }
+  .callout.warn .callout-label{ color:var(--clay); }
+  .callout p{ margin:0; color:var(--ink); }
+  .callout p + p{ margin-top:10px; }
+  .priority-list{ display:flex; flex-direction:column; gap:14px; margin:14px 0 22px; }
+  .priority-item{ display:grid; grid-template-columns:52px 1fr; gap:18px; padding:18px 20px; border:1px solid var(--line); border-radius:10px; background:var(--paper-raised); box-shadow:var(--shadow); }
+  .priority-item.first{ border-color:var(--jade); background:var(--jade-soft); }
+  .priority-num{ font-family:"Noto Serif KR",serif; font-size:30px; font-weight:700; color:var(--faint); line-height:1; }
+  .priority-item.first .priority-num{ color:var(--jade-strong); }
+  .priority-body h4{ margin:2px 0 6px; font-size:15.5px; font-family:"Noto Sans KR",sans-serif; }
+  .priority-body p{ margin:0; font-size:14.5px; color:var(--muted); }
+  .priority-body .first-label{ font-family:"JetBrains Mono",monospace; font-size:11px; color:var(--jade-strong); letter-spacing:.05em; display:block; margin-bottom:5px; }
+  .sources{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:2px; }
+  .sources li{ margin:0; padding:11px 0; border-bottom:1px solid var(--line); font-size:14px; }
+  .sources li:last-child{ border-bottom:none; }
+  .sources a{ color:var(--ink); text-decoration:none; }
+  .sources a:hover{ color:var(--jade-strong); text-decoration:underline; }
+  .sources .src-index{ font-family:"JetBrains Mono",monospace; color:var(--faint); margin-right:10px; font-size:12.5px; }
+  footer{ margin-top:80px; padding-top:24px; border-top:1px solid var(--line); color:var(--faint); font-size:13px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+  code{ font-family:"JetBrains Mono",monospace; font-size:.92em; background:var(--paper-sunken); padding:1px 6px; border-radius:4px; }
+  @media (max-width:600px){
+    .cover{ padding:44px 0 32px; }
+    .priority-item{ grid-template-columns:36px 1fr; gap:12px; padding:16px; }
+    .priority-num{ font-size:22px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="cover">
+    <div class="eyebrow"><span class="dot"></span>키워드 시장조사 · 로담한의원</div>
+    <h1>코라테라피</h1>
+    <div class="meta-row">
+      <span class="chip">조사일자 <b>2026-08-25</b></span>
+      <span class="chip">채널 <b>네이버 · 구글 · SearchAd</b></span>
+      <span class="chip">유형 <b>자사 등록 상표(2007년 정식 등록)</b></span>
+    </div>
+    <p class="lede">로담이 콘텐츠를 사실상 독점(블로그 18/20, 카페 20/20)하는 몇 안 되는 키워드. 그러나 검색량은 "새살침"의 0.7%에 불과하고, 유일하게 비어있는 지식iN 채널에서는 경쟁 한의원이 답변자로 노출되며 실제 이탈(churn) 사례도 확인됨.</p>
+  </div>
+
+  <nav class="toc" aria-label="목차">
+    <a href="#sec1"><span class="n">01</span>네이버 조사</a>
+    <a href="#sec2"><span class="n">02</span>구글 조사</a>
+    <a href="#sec3"><span class="n">03</span>갭 분석</a>
+    <a href="#sec4"><span class="n">04</span>개선 제안</a>
+    <a href="#sec5"><span class="n">05</span>경쟁사 대조</a>
+    <a href="#sources"><span class="n">＋</span>Sources</a>
+  </nav>
+
+  <section id="sec1">
+    <div class="sec-head"><span class="sec-num">01</span><h2>네이버 조사</h2></div>
+    <p class="sec-sub">"코라테라피"는 로담이 2006-08-09 상표출원, 2007-12-17 정식 등록한 특허 서비스표. "새살침"은 보통명사로 판단되어 상표 등록이 거절되었고, 그 영문 의역(Collagen Regeneration Therapy)을 줄인 조어로 대신 등록됨.</p>
+
+    <h3>블로그 <span class="tag">search_blog · sim · 상위 20건</span></h3>
+    <div class="stat-line ok">로담 관련(공식+환자후기) <b>18건 / 20건</b></div>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>구분</th><th class="num">건수</th><th>내용</th></tr></thead>
+        <tbody>
+          <tr class="row-highlight-jade">
+            <td>공식 채널(skincora.tistory.com)</td><td class="num">12</td>
+            <td>시술 설명, 원장 칼럼(수원점 이상엽 원장 등), 흉터 유형별 치료 사례</td>
+          </tr>
+          <tr class="row-highlight-jade">
+            <td>환자 개인 후기(내돈내산)</td><td class="num">6</td>
+            <td>회차별 후기, 가격 후기, 결혼 전 피부관리 후기 등</td>
+          </tr>
+          <tr class="row-highlight-clay">
+            <td>무관 노이즈</td><td class="num">1</td>
+            <td>"경기도 포천시 일반음식점" 리스트 — 검색엔진 크롤링성 무관 콘텐츠로 추정</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="muted">지금까지 조사한 어떤 키워드보다도 압도적인 자사 콘텐츠 점유율(90%). 다만 공식 채널에 K팝스타·음식점 리스트·"엄마 말에 수긍하는 이유" 같은 <strong>흉터치료와 무관한 필러성 게시물</strong>이 다수 섞여 있음 — 오래된 개인 티스토리 블로그를 인수해 브랜드 채널로 전환한 이력으로 추정되며, 검색 결과 품질에는 부정적 영향을 줄 수 있음.</p>
+    <div class="callout warn">
+      <span class="callout-label">주의 신호</span>
+      <p>2위 "강남 여드름흉터치료 새살침 부작용과 붉은기, 코라테라피 2주 후기"는 제목에 <strong>"부작용"</strong>을 명시한 환자 후기.</p>
+    </div>
+
+    <h3>카페 <span class="tag">search_cafearticle · sim · 상위 20건</span></h3>
+    <div class="stat-line ok">로담 관련 콘텐츠 <b>20건 / 20건 (전건)</b></div>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>구분</th><th class="num">건수</th><th>내용</th></tr></thead>
+        <tbody>
+          <tr class="row-highlight-jade">
+            <td>공식 마케팅 카페(2ne1lovelike)</td><td class="num">6</td>
+            <td>신촌·홍대·부산서면·잠실·천안·아산 등 지점별 키워드 스터핑형 포스트</td>
+          </tr>
+          <tr>
+            <td>acnescar(피부인) — 환자 후기/질문</td><td class="num">11</td>
+            <td>회차별 후기, 효과 관련 질문, 비교 질문 등</td>
+          </tr>
+          <tr>
+            <td>병원발품백과사전(suddes)</td><td class="num">1</td>
+            <td>부산 새살침 결정 후기</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>핵심 발견 — 경쟁 구도가 "노출 경쟁"이 아니라 "직접 비교"로 나타남:</strong></p>
+    <div class="callout warn">
+      <span class="callout-label">전환(churn) 위험 — 실사례</span>
+      <p><strong>"코라테라피? 트랜스테라피?"</strong>(acnescar 2위): 로담 시술을 2회 받은 환자가 후한의원의 "트랜스테라피"로 갈아탈지 고민하는 글.</p>
+      <p><strong>"트랜스테라피와 코라테라피중에"</strong>(5위): "트랜스테라피는 후한의원, 코라테라피는 로담한의원이 전문"이라는 답변 확인 — 후한의원의 대응 브랜드명이 명확히 드러남.</p>
+      <p><strong>"코라테라피 3회 시술 했는데 효과를 모르겠어요"</strong>(6위), <strong>"효과는 있는데 붉은기가 오래가네요"</strong>(4위) — 구매 직전 채널에 노출 중인 효과 불확실성·부작용 호소.</p>
+    </div>
+    <ul>
+      <li><strong>10위</strong>: 로담한의원 천안점 팽광일 원장이 acnescar 카페에 직접 콘텐츠 게시 — 원장 실명 콘텐츠 마케팅이 이미 가동 중임을 확인.</li>
+      <li><strong>11위</strong>: 제주 지역 환자가 "서울에 살았다면 코라테라피를 받았을 수도 있었겠다"고 언급 — 로담 미진출 지역에서의 접근성 격차를 보여주는 사례.</li>
+    </ul>
+
+    <h3>지식iN <span class="tag">search_kin · sim · 상위 20건</span></h3>
+    <div class="stat-line warn">로담(공식) 노출 <b>0건 / 20건</b> — 유일하게 비어있는 채널</div>
+    <div class="callout warn">
+      <span class="callout-label">경쟁사 답변 노출</span>
+      <p>"코라테라피 이후 관리"(9위) 질문에 <strong>나비한의원(부산 서면) 주봉현 원장</strong>이 직접 답변. "점뺀 흉터 코라테라피"(13위)에도 동일 원장이 "코라테라피·융기침·융기술·복원술" 등 유사 시술명을 나열하며 답변 — <strong>로담의 고유 상표 키워드 아래에서 경쟁 한의원 원장이 신뢰를 쌓고 있는 상황</strong>.</p>
+    </div>
+    <p class="muted">대다수는 "닥톡" 상담 매칭 플랫폼 명의 답변으로 소속 불명. "서브시전하고 새살침(코라테라피) 차이"(15위) 같은 비교 질문도 존재 — 로담이 직접 답하지 않는 채널에서 소비자가 스스로 판단하고 있는 구조.</p>
+
+    <h3>지역검색 <span class="tag">search_local · comment순 · 5건</span></h3>
+    <div class="stat-line neutral">결과 <b>0건 반환</b></div>
+    <p class="muted">"코라테라피"는 업체명이 아닌 시술명이라 지역검색에 매칭되는 업체가 없는 것으로 보임(구조적 특성).</p>
+
+    <h3>절대 검색량 <span class="tag">SearchAd API · 2026-08-25</span></h3>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>키워드</th><th class="num">PC 검색수</th><th class="num">모바일 검색수</th><th class="num">합계</th><th>경쟁정도</th></tr></thead>
+        <tbody>
+          <tr class="row-highlight-clay">
+            <td><strong>코라테라피</strong></td><td class="num">10</td><td class="num">60</td><td class="num"><strong>70</strong></td><td><span class="badge low">중간</span></td>
+          </tr>
+          <tr class="row-highlight-jade">
+            <td>새살침</td><td class="num">1,460</td><td class="num">8,640</td><td class="num"><strong>10,100</strong></td><td><span class="badge zero">높음</span></td>
+          </tr>
+          <tr>
+            <td>흉터치료</td><td class="num">1,040</td><td class="num">2,020</td><td class="num">3,060</td><td><span class="badge zero">높음</span></td>
+          </tr>
+          <tr>
+            <td>로담한의원 (브랜드)</td><td class="num">840</td><td class="num">3,190</td><td class="num">4,030</td><td><span class="badge high">낮음</span></td>
+          </tr>
+          <tr>
+            <td>흉터침</td><td class="num">&lt; 10</td><td class="num">10</td><td class="num">~10</td><td><span class="badge high">낮음</span></td>
+          </tr>
+          <tr>
+            <td>흉터한의원</td><td class="num">&lt; 10</td><td class="num">20</td><td class="num">~20</td><td><span class="badge zero">높음</span></td>
+          </tr>
+          <tr>
+            <td>한의원흉터치료</td><td class="num">&lt; 10</td><td class="num">30</td><td class="num">~30</td><td><span class="badge zero">높음</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout">
+      <span class="callout-label">해석</span>
+      <p>"코라테라피"의 검색량(70)은 "새살침"(10,100)의 <strong>0.7%에 불과</strong> — 소비자 대부분이 정식 등록 상표명이 아니라 보통명사화된 "새살침"으로 검색한다는 뜻. 다만 경쟁정도가 "중간"으로, 조사한 흉터 관련 키워드 대부분이 "높음"인 것과 달리 <strong>입찰 경쟁이 낮은 저경쟁 안전지대</strong>이기도 함.</p>
+      <p>트래픽 규모는 작지만 로담이 사실상 무경쟁으로 점유할 수 있는 영역 — 신규 고객 유입보다는 <strong>이미 "코라테라피"를 검색할 만큼 로담을 인지한 소비자(구매 막바지 단계)를 확실히 붙잡는 안전판</strong> 역할.</p>
+    </div>
+  </section>
+
+  <section id="sec2">
+    <div class="sec-head"><span class="sec-num">02</span><h2>구글 조사</h2></div>
+
+    <h3>"코라테라피" 그대로 검색</h3>
+    <div class="stat-line ok">로담 공식 채널이 사실상 독점 노출</div>
+    <ul>
+      <li>YouTube "[흉터 읽어주는 한의사] 새살침 코라테라피 어떤 시술인가요?"</li>
+      <li>blog.skincora.com 설명 콘텐츠 2건, skincora.com/coratherapy.php(공식 서비스 페이지)</li>
+      <li>뉴스1(news1.kr) "코라테라피 '새살침', 가리기 급급했던 여드름 흉터 치료" — 언론 보도 콘텐츠</li>
+    </ul>
+    <div class="callout warn">
+      <span class="callout-label">지표 해석 주의</span>
+      <p>seekrod.com "코코테라피" 2건은 <strong>철자가 비슷한 무관 콘텐츠(마사지 업체로 추정)</strong>. "코라테라피"가 아닌 "코코테라피"라 검색 노이즈로 분류 — 지표 해석 시 혼동 주의.</p>
+    </div>
+
+    <h3>"코라테라피 후기 단점"</h3>
+    <p>dcinside 갤러리(체험 문의), sungyesa.com <strong>"코라테라피(새살침) 시술 받고 4년 지난 후기"</strong>(장기 추적, 긍정적) 확인. massageguide.co.kr "수원 코코테라피 방문후기"는 무관 마사지 업체 후기(노이즈).</p>
+    <ul>
+      <li><strong>단점</strong>: 다른 시술 대비 비싸고 아프며 오래 걸림 / 재생테이프+피딱지로 외출 어려움 / 회복기간 중 술·담배·기름진 음식 제한</li>
+      <li class="muted"><strong>장점</strong>: 부작용 없음, 4년 후에도 재함몰 없었다는 장기 후기 확인</li>
+    </ul>
+
+    <h3>"코라테라피 로담한의원 특허"</h3>
+    <ul>
+      <li>매거진한경(한국 소비자가 만족한 최고 브랜드) 노출 확인</li>
+      <li><strong>특허법원(patent.scourt.go.kr) 판결 정보 노출</strong> — 상표 관련 법적 분쟁 이력으로 추정되는 판례가 검색됨(구체 내용 미확인, 법무 검토 권장)</li>
+      <li><strong>rodamblog.com</strong> 신규 확인 — skincora.com과는 별도의 로담 공식 블로그 도메인</li>
+      <li>등록 경위: "새살침"은 보통명사로 상표 거절 → "코라테라피(CORA Therapy)"로 2006-08-09 출원, 2007-12-17 정식 등록</li>
+    </ul>
+  </section>
+
+  <section id="sec3">
+    <div class="sec-head"><span class="sec-num">03</span><h2>갭 분석 <span style="font-family:'Noto Sans KR';font-size:15px;font-weight:400;color:var(--muted);">— 소유 키워드 방어 관점</span></h2></div>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th style="width:24%">축</th><th>현황</th></tr></thead>
+        <tbody>
+          <tr class="row-highlight-jade"><td><strong>채널별 노출</strong></td><td>블로그 18/20, 카페 20/20 — 압도적 점유. 다만 지식iN은 0/20이며 오히려 경쟁 한의원 원장이 답변자로 노출</td></tr>
+          <tr class="row-highlight-clay"><td><strong>경쟁사 침투 지점</strong></td><td>지식iN(나비한의원)과 카페 비교글(코라테라피 vs 트랜스테라피)에서 후한의원·나비한의원이 로담의 상표 키워드 아래 소비자 의사결정에 개입 중</td></tr>
+          <tr><td><strong>소비자 페인포인트</strong></td><td>비용·통증·회복기간(다운타임), 회차당 효과 불확실성, 부작용(붉은기 지속) — 여드름흉터/롤링성흉터 조사에서도 반복된 동일 패턴</td></tr>
+          <tr><td><strong>지역 접근성 갭</strong></td><td>제주 등 미진출 지역 소비자가 대안(트랜스테라피·피비테라피)으로 이탈하는 실사례 확인</td></tr>
+          <tr><td><strong>콘텐츠 품질</strong></td><td>공식 블로그(skincora.tistory.com)에 흉터와 무관한 필러 게시물이 다수 섞여 있어 전문성 인상을 희석시킬 수 있음</td></tr>
+          <tr class="row-highlight-clay"><td><strong>검색량 규모</strong></td><td>"코라테라피"(70)는 "새살침"(10,100)의 0.7% 수준 — 규모는 작지만 경쟁정도 "중간"이라 저비용으로 지킬 수 있는 안전 영역</td></tr>
+          <tr><td><strong>법적 자산</strong></td><td>2007년 정식 등록 서비스표. 특허법원 판례 노출 확인 — 상표 분쟁 이력 존재 가능성, 법무 확인 권장</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="sec4">
+    <div class="sec-head"><span class="sec-num">04</span><h2>우선순위별 개선 제안</h2></div>
+    <div class="priority-list">
+      <div class="priority-item first">
+        <div class="priority-num">01</div>
+        <div class="priority-body">
+          <span class="first-label">최우선</span>
+          <h4>지식iN 방어 진입</h4>
+          <p>유일하게 로담이 부재한 채널이자, 경쟁 한의원(나비한의원)이 이미 답변자로 자리잡고 있는 영역. "코라테라피" 관련 질문에 로담 소속 한의사가 답변자로 등록되도록(의료광고법 범위 내에서) 우선 대응.</p>
+        </div>
+      </div>
+      <div class="priority-item">
+        <div class="priority-num">02</div>
+        <div class="priority-body">
+          <h4>카페 비교글(코라테라피 vs 트랜스테라피) 대응 콘텐츠</h4>
+          <p>"3회 했는데 효과를 모르겠다", "부작용/붉은기 지속" 같은 실제 이탈 위험 신호에 대해 회차별 기대 효과·부작용 회복 기간을 명확히 안내하는 FAQ형 콘텐츠로 acnescar 카페 등에 선제 대응.</p>
+        </div>
+      </div>
+      <div class="priority-item">
+        <div class="priority-num">03</div>
+        <div class="priority-body">
+          <h4>공식 블로그(skincora.tistory.com) 정리</h4>
+          <p>흉터와 무관한 K팝·음식점 리스트 등 필러 게시물이 검색 결과 품질과 브랜드 전문성 인상을 해칠 수 있음. 비의료 콘텐츠 정리 또는 별도 블로그 분리 검토.</p>
+        </div>
+      </div>
+      <div class="priority-item">
+        <div class="priority-num">04</div>
+        <div class="priority-body">
+          <h4>"코라테라피" → "새살침" 트래픽 흡수 도관화</h4>
+          <p>절대 검색량이 작으므로(70) 단독 키워드로 신규 고객을 끌기보다, "새살침"(10,100) 콘텐츠 안에서 "정식 등록 상표명은 코라테라피"라는 신뢰 요소로 활용해 상위 키워드 트래픽을 흡수.</p>
+        </div>
+      </div>
+      <div class="priority-item">
+        <div class="priority-num">05</div>
+        <div class="priority-body">
+          <h4>지역 접근성 갭 대응</h4>
+          <p>제주 등 미진출 지역 문의에 대해 온라인 상담·원격 케어 옵션 등 대안 접점 검토.</p>
+        </div>
+      </div>
+      <div class="priority-item">
+        <div class="priority-num">06</div>
+        <div class="priority-body">
+          <h4>특허법원 판례 소스 확인</h4>
+          <p>법무 담당자가 patent.scourt.go.kr 판례 원문을 확인해 상표 분쟁 이력이 있는지, 있다면 대응 현황이 최신인지 점검 권장.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="sec5">
+    <div class="sec-head"><span class="sec-num">05</span><h2>경쟁사 트래커 대조</h2></div>
+    <p>기존 경쟁사 트래커에 기록된 <strong>후한의원</strong>의 대응 시술명이 <strong>"트랜스테라피"</strong>임이 이번 조사에서 명확히 확인됨(트래커 갱신 완료).</p>
+    <div class="callout">
+      <span class="callout-label">신규 경쟁사</span>
+      <p><strong>나비한의원</strong>(부산 서면, 주봉현 원장, 한의학박사) — 지식iN에서 "코라테라피" 관련 질문에 직접 답변하며 탈모·피부·다이어트 등 폭넓은 진료 범위로 소개되는 것이 특징. 카페에서 "피비테라피"라는 또 다른 경쟁 시술명도 확인(구체 브랜드 미상, 추가 조사 필요).</p>
+    </div>
+  </section>
+
+  <section id="sources">
+    <div class="sec-head"><span class="sec-num">＋</span><h2>Sources</h2></div>
+    <ol class="sources">
+      <li><span class="src-index">01</span><a href="https://www.youtube.com/watch?v=jLZp2pLK2Hc" target="_blank" rel="noopener">[흉터 읽어주는 한의사] 새살침 코라테라피 어떤 시술인가요? — YouTube</a></li>
+      <li><span class="src-index">02</span><a href="https://blog.skincora.com/%EC%BD%94%EB%9D%BC%ED%85%8C%EB%9D%BC%ED%94%BC%EB%9E%80-%ED%94%BC%EB%B6%80%EC%9E%AC%EC%83%9D-%EC%9E%91%EC%9A%A9%EC%9B%90%EB%A6%AC-%ED%9A%A8%EA%B3%BC/" target="_blank" rel="noopener">코라테라피란 무엇이며 어떻게 피부 재생에 작용하나요? — blog.skincora.com</a></li>
+      <li><span class="src-index">03</span><a href="https://blog.skincora.com/%EC%BD%94%EB%9D%BC%ED%85%8C%EB%9D%BC%ED%94%BC%EB%9E%80-%EC%BD%94%EB%9D%BC%ED%85%8C%EB%9D%BC%ED%94%BC%ED%9A%A8%EA%B3%BC/" target="_blank" rel="noopener">코라테라피란 무엇이며 어떤 효과가 있나요? — blog.skincora.com</a></li>
+      <li><span class="src-index">04</span><a href="https://skincora.com/coratherapy.php" target="_blank" rel="noopener">새살침 코라테라피 — skincora.com</a></li>
+      <li><span class="src-index">05</span><a href="https://www.news1.kr/industry/medical/3068396" target="_blank" rel="noopener">코라테라피 '새살침', 가리기 급급했던 여드름 흉터 치료 — 뉴스1</a></li>
+      <li><span class="src-index">06</span><a href="https://sungyesa.com/petitphoto/37560" target="_blank" rel="noopener">코라테라피 (새살침) 시술 받고 4년 지난 후기 — 성예사</a></li>
+      <li><span class="src-index">07</span><a href="https://magazine.hankyung.com/business/article/202102227298b" target="_blank" rel="noopener">한국 소비자가 만족한 최고 브랜드 — 매거진한경</a></li>
+      <li><span class="src-index">08</span><a href="https://patent.scourt.go.kr/dcboard/new/DcNewsViewAction.work?seqnum=20432&gubun=44&scode_kname=&pageIndex=1&searchWord=&cbub_code=000700" target="_blank" rel="noopener">우리법원 주요판결 — 특허법원</a></li>
+      <li><span class="src-index">09</span><a href="https://koreanmedicine.org/hospital/sub.htm?nav_code=hos1635346159&mode=view&idx=146" target="_blank" rel="noopener">로담한의원 — koreanmedicine.org</a></li>
+      <li><span class="src-index">10</span><a href="https://www.skincora.com/branch/nowon.php" target="_blank" rel="noopener">새살침, 코라테라피가 시작된 로담한의원 (노원점) — skincora.com</a></li>
+      <li><span class="src-index">11</span><a href="https://rodamblog.com/%EC%83%88%EC%82%B4%EC%B9%A8%EC%9D%B4%EB%9E%80-%EB%AC%B4%EC%97%87%EC%9D%BC%EA%B9%8C%EC%9A%94-%EA%B0%95%EB%82%A8-%ED%95%9C%EC%9D%98%EC%9B%90-%EC%9B%90%EC%9E%A5%EC%9D%B4-%EC%95%8C%EB%A0%A4%EC%A3%BC/" target="_blank" rel="noopener">새살침이란 무엇일까요? 강남 한의원 원장이 알려주는 코라테라피에 대한 모든 것 — rodamblog.com</a></li>
+    </ol>
+  </section>
+
+  <footer>
+    <span>로담한의원 키워드 시장조사 · keyword-market-research 스킬</span>
+    <span>outputs/코라테라피_20260825.md 원본 기반</span>
+  </footer>
+
+</div>
+</body>
+</html>

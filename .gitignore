@@ -1,0 +1,13 @@
+# 자격증명 — 절대 커밋 금지
+.env.searchad
+.mcp.json
+
+# 대용량 바이너리(스크린샷 등)
+_templates/
+
+# OS/에디터
+.DS_Store
+Thumbs.db
+
+# node
+node_modules/

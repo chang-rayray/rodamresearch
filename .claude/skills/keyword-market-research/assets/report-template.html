@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TITLE}} 키워드 시장조사</title>
+<meta name="description" content="로담한의원 '{{KEYWORD}}' 키워드 온라인 노출 현황 및 경쟁사 분석 ({{DATE}})">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  /*
+    로담한의원 키워드 시장조사 리포트 — 공용 디자인 시스템
+    팔레트: paper(종이빛 배경) + jade(재생/한방, 주 강조) + clay(경고/부정 신호 전용)
+    타이포: Noto Serif KR(헤딩) / Noto Sans KR(본문) / JetBrains Mono(숫자·태그·라벨)
+    이 토큰과 클래스 체계는 모든 조사 리포트에서 동일하게 재사용한다 — 리포트마다
+    새로 디자인하지 말 것. 콘텐츠(섹션 개수, 표 행, 콜아웃)만 키워드에 맞게 채운다.
+  */
+  :root{
+    --paper:#F4F5F0;
+    --paper-raised:#FFFFFF;
+    --paper-sunken:#EBEDE6;
+    --ink:#1B231F;
+    --muted:#5C6960;
+    --faint:#8A968E;
+    --jade:#2F6F5E;
+    --jade-strong:#1F5346;
+    --jade-soft:#E3EEE8;
+    --clay:#B65C38;
+    --clay-soft:#F6E7DE;
+    --line:rgba(27,35,31,.13);
+    --line-strong:rgba(27,35,31,.24);
+    --shadow: 0 1px 2px rgba(20,26,22,.04), 0 8px 24px -12px rgba(20,26,22,.14);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#121613; --paper-raised:#1A211C; --paper-sunken:#0D110E;
+      --ink:#ECEFEA; --muted:#93A199; --faint:#65726A;
+      --jade:#6FC3A6; --jade-strong:#8CD4BA; --jade-soft:rgba(111,195,166,.14);
+      --clay:#E38F63; --clay-soft:rgba(227,143,99,.14);
+      --line:rgba(236,239,234,.14); --line-strong:rgba(236,239,234,.26);
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#121613; --paper-raised:#1A211C; --paper-sunken:#0D110E;
+    --ink:#ECEFEA; --muted:#93A199; --faint:#65726A;
+    --jade:#6FC3A6; --jade-strong:#8CD4BA; --jade-soft:rgba(111,195,166,.14);
+    --clay:#E38F63; --clay-soft:rgba(227,143,99,.14);
+    --line:rgba(236,239,234,.14); --line-strong:rgba(236,239,234,.26);
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+  }
+  *{box-sizing:border-box;}
+  html{background:var(--paper);}
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:"Noto Sans KR","Malgun Gothic",sans-serif; font-size:16px; line-height:1.75; -webkit-font-smoothing:antialiased; }
+  ::selection{ background:var(--jade-soft); color:var(--ink); }
+  a{ color:var(--jade-strong); text-decoration-color:var(--line-strong); text-underline-offset:2px; }
+  a:hover{ color:var(--jade); }
+  a:focus-visible, button:focus-visible, summary:focus-visible{ outline:2px solid var(--jade); outline-offset:2px; border-radius:2px; }
+  .wrap{ max-width:880px; margin:0 auto; padding:0 24px 96px; }
+  .cover{ padding:64px 0 40px; border-bottom:1px solid var(--line); margin-bottom:48px; }
+  .eyebrow{ font-family:"JetBrains Mono",monospace; font-size:12.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--jade); display:flex; align-items:center; gap:10px; margin-bottom:22px; }
+  .eyebrow .dot{ width:6px; height:6px; border-radius:50%; background:var(--jade); flex:none; }
+  h1{ font-family:"Noto Serif KR",serif; font-weight:700; font-size:clamp(30px,5vw,44px); line-height:1.28; letter-spacing:-.01em; margin:0 0 22px; text-wrap:balance; color:var(--ink); }
+  .meta-row{ display:flex; flex-wrap:wrap; gap:10px; margin-bottom:26px; }
+  .chip{ font-family:"JetBrains Mono",monospace; font-size:12.5px; padding:5px 11px; border-radius:100px; border:1px solid var(--line-strong); color:var(--muted); background:var(--paper-raised); white-space:nowrap; }
+  .chip b{ color:var(--ink); font-weight:600; }
+  .lede{ font-size:17.5px; color:var(--muted); max-width:62ch; margin:0; }
+  .toc{ display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:10px; overflow:hidden; margin-bottom:56px; }
+  .toc a{ display:block; background:var(--paper-raised); padding:14px 16px; text-decoration:none; color:var(--ink); font-size:14px; }
+  .toc a:hover{ background:var(--jade-soft); }
+  .toc .n{ font-family:"JetBrains Mono",monospace; color:var(--jade); font-size:12px; display:block; margin-bottom:3px; }
+  section{ margin-bottom:64px; scroll-margin-top:24px; }
+  .sec-head{ display:flex; align-items:baseline; gap:14px; margin-bottom:8px; }
+  .sec-num{ font-family:"JetBrains Mono",monospace; font-size:14px; color:var(--jade); background:var(--jade-soft); border-radius:6px; padding:3px 9px; flex:none; }
+  h2{ font-family:"Noto Serif KR",serif; font-size:26px; font-weight:600; margin:0; letter-spacing:-.005em; text-wrap:balance; }
+  .sec-sub{ color:var(--muted); font-size:15px; margin:6px 0 28px 0; }
+  h3{ font-family:"Noto Sans KR",sans-serif; font-size:16.5px; font-weight:700; margin:36px 0 6px; display:flex; align-items:center; gap:10px; }
+  h3 .tag{ font-family:"JetBrains Mono",monospace; font-weight:500; font-size:11.5px; color:var(--faint); background:var(--paper-sunken); border:1px solid var(--line); padding:2px 7px; border-radius:5px; }
+  .stat-line{ display:inline-flex; align-items:center; gap:8px; font-size:14.5px; padding:7px 13px; border-radius:8px; margin:6px 0 18px; border:1px solid var(--line); }
+  .stat-line.warn{ background:var(--clay-soft); border-color:transparent; color:var(--ink); }
+  .stat-line.ok{ background:var(--jade-soft); border-color:transparent; color:var(--ink); }
+  .stat-line.neutral{ background:var(--paper-sunken); color:var(--muted); }
+  .stat-line b{ font-family:"JetBrains Mono",monospace; }
+  p{ margin:0 0 16px; color:var(--ink); }
+  p.muted, li.muted{ color:var(--muted); }
+  ul, ol{ margin:0 0 16px; padding-left:22px; }
+  li{ margin-bottom:9px; }
+  li::marker{ color:var(--faint); }
+  strong{ font-weight:700; }
+  .table-scroll{ overflow-x:auto; border:1px solid var(--line); border-radius:10px; margin:14px 0 22px; box-shadow:var(--shadow); background:var(--paper-raised); }
+  table{ border-collapse:collapse; width:100%; min-width:520px; font-size:14.5px; }
+  thead th{ text-align:left; font-family:"JetBrains Mono",monospace; font-weight:500; font-size:11.5px; letter-spacing:.04em; text-transform:uppercase; color:var(--muted); background:var(--paper-sunken); padding:11px 16px; border-bottom:1px solid var(--line); white-space:nowrap; }
+  tbody td{ padding:11px 16px; border-bottom:1px solid var(--line); vertical-align:top; }
+  tbody tr:last-child td{ border-bottom:none; }
+  tbody tr:hover td{ background:var(--jade-soft); }
+  td.num, th.num{ font-family:"JetBrains Mono",monospace; font-variant-numeric:tabular-nums; text-align:right; }
+  tr.row-highlight-jade td{ background:var(--jade-soft); }
+  tr.row-highlight-clay td{ background:var(--clay-soft); }
+  .badge{ display:inline-block; font-family:"JetBrains Mono",monospace; font-size:12px; font-weight:700; padding:2px 8px; border-radius:5px; }
+  .badge.high{ background:var(--jade-soft); color:var(--jade-strong); }
+  .badge.zero{ background:var(--clay-soft); color:var(--clay); }
+  .badge.low{ background:var(--paper-sunken); color:var(--muted); }
+  .callout{ border-radius:10px; padding:18px 20px; margin:18px 0 24px; border-left:3px solid var(--jade); background:var(--jade-soft); }
+  .callout.warn{ border-left-color:var(--clay); background:var(--clay-soft); }
+  .callout .callout-label{ font-family:"JetBrains Mono",monospace; font-size:11.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--jade-strong); margin-bottom:8px; display:block; }
+  .callout.warn .callout-label{ color:var(--clay); }
+  .callout p{ margin:0; color:var(--ink); }
+  .callout p + p{ margin-top:10px; }
+  .priority-list{ display:flex; flex-direction:column; gap:14px; margin:14px 0 22px; }
+  .priority-item{ display:grid; grid-template-columns:52px 1fr; gap:18px; padding:18px 20px; border:1px solid var(--line); border-radius:10px; background:var(--paper-raised); box-shadow:var(--shadow); }
+  .priority-item.first{ border-color:var(--jade); background:var(--jade-soft); }
+  .priority-num{ font-family:"Noto Serif KR",serif; font-size:30px; font-weight:700; color:var(--faint); line-height:1; }
+  .priority-item.first .priority-num{ color:var(--jade-strong); }
+  .priority-body h4{ margin:2px 0 6px; font-size:15.5px; font-family:"Noto Sans KR",sans-serif; }
+  .priority-body p{ margin:0; font-size:14.5px; color:var(--muted); }
+  .priority-body .first-label{ font-family:"JetBrains Mono",monospace; font-size:11px; color:var(--jade-strong); letter-spacing:.05em; display:block; margin-bottom:5px; }
+  .sources{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:2px; }
+  .sources li{ margin:0; padding:11px 0; border-bottom:1px solid var(--line); font-size:14px; }
+  .sources li:last-child{ border-bottom:none; }
+  .sources a{ color:var(--ink); text-decoration:none; }
+  .sources a:hover{ color:var(--jade-strong); text-decoration:underline; }
+  .sources .src-index{ font-family:"JetBrains Mono",monospace; color:var(--faint); margin-right:10px; font-size:12.5px; }
+  footer{ margin-top:80px; padding-top:24px; border-top:1px solid var(--line); color:var(--faint); font-size:13px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+  code{ font-family:"JetBrains Mono",monospace; font-size:.92em; background:var(--paper-sunken); padding:1px 6px; border-radius:4px; }
+  @media (max-width:600px){
+    .cover{ padding:44px 0 32px; }
+    .priority-item{ grid-template-columns:36px 1fr; gap:12px; padding:16px; }
+    .priority-num{ font-size:22px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="cover">
+    <div class="eyebrow"><span class="dot"></span>키워드 시장조사 · 로담한의원</div>
+    <h1>{{TITLE}}</h1>
+    <div class="meta-row">
+      <span class="chip">조사일자 <b>{{DATE}}</b></span>
+      <span class="chip">채널 <b>네이버 · 구글 · SearchAd</b></span>
+      <span class="chip">대상 <b>로담한의원 9개 지점</b></span>
+    </div>
+    <p class="lede">{{LEDE}}</p>
+  </div>
+
+  <nav class="toc" aria-label="목차">
+    <a href="#sec1"><span class="n">01</span>네이버 조사</a>
+    <a href="#sec2"><span class="n">02</span>구글 조사</a>
+    <a href="#sec3"><span class="n">03</span>갭 분석</a>
+    <a href="#sec4"><span class="n">04</span>개선 제안</a>
+    <a href="#sec5"><span class="n">05</span>경쟁사 대조</a>
+    <a href="#sources"><span class="n">＋</span>Sources</a>
+  </nav>
+
+  <!--
+    아래부터 {{BODY}} — 원본 MD의 1~5절 + Sources를 이 구조로 옮겨 채운다.
+    사용 가능한 컴포넌트:
+      <div class="stat-line ok|warn|neutral">노출 X건/Y건 같은 한 줄 지표</div>
+      <div class="table-scroll"><table>...</table></div>  — 표는 항상 이 래퍼로 감쌀 것(가로 스크롤)
+      <tr class="row-highlight-jade">/<tr class="row-highlight-clay">  — 표에서 강조할 행
+      <span class="badge high|zero|low">라벨</span>
+      <div class="callout">/<div class="callout warn">  — 핵심 인사이트, 부정 신호는 warn
+      <div class="priority-list"><div class="priority-item first">...</div>...</div> — 4절 우선순위 제안
+      <ol class="sources"><li><span class="src-index">01</span><a href="...">...</a></li></ol> — Sources
+    섹션 5개 제목은 리포트마다 실제 절 제목으로 바꿔도 되고(예: "새살침 vs 브랜드명"), 순서(01~05)는 유지한다.
+  -->
+  {{BODY}}
+
+  <footer>
+    <span>로담한의원 키워드 시장조사 · keyword-market-research 스킬</span>
+    <span>outputs/{{KEYWORD}}_{{DATE_COMPACT}}.md 원본 기반</span>
+  </footer>
+
+</div>
+</body>
+</html>
