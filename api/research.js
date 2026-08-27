@@ -352,7 +352,19 @@ footer{ margin-top:64px; padding-top:20px; border-top:1px solid var(--line); col
 
 export default async function handler(req, res) {
   if (req.method === "GET") {
-    res.status(200).json({ ok: true, usage: "POST { keyword: string } 로 요청하세요." });
+    res.status(200).json({
+      ok: true,
+      usage: "POST { keyword: string } 로 요청하세요.",
+      env_check: {
+        ANTHROPIC_API_KEY: !!process.env.ANTHROPIC_API_KEY,
+        NAVER_CLIENT_ID: !!process.env.NAVER_CLIENT_ID,
+        NAVER_CLIENT_SECRET: !!process.env.NAVER_CLIENT_SECRET,
+        NAVER_AD_API_KEY: !!process.env.NAVER_AD_API_KEY,
+        NAVER_AD_SECRET_KEY: !!process.env.NAVER_AD_SECRET_KEY,
+        NAVER_AD_CUSTOMER_ID: !!process.env.NAVER_AD_CUSTOMER_ID,
+      },
+      note: "값은 노출하지 않고 설정 여부(true/false)만 표시합니다. false인 항목은 이 Vercel 프로젝트의 현재 배포에 해당 환경변수가 전달되지 않은 것입니다 — Settings에서 등록/환경 범위 확인 후 Redeploy 필요.",
+    });
     return;
   }
   if (req.method !== "POST") {
