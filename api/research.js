@@ -84,7 +84,7 @@ async function googleSearch(query, num) {
     const res = await fetch(`https://www.googleapis.com/customsearch/v1?${params.toString()}`);
     if (!res.ok) {
       const t = await res.text();
-      return { items: [], error: `http_${res.status}: ${t.slice(0, 200)}` };
+      return { items: [], error: `http_${res.status}: ${t.slice(0, 800)}` };
     }
     const data = await res.json();
     const items = (data.items || []).map((it) => ({
