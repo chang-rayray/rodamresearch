@@ -132,17 +132,26 @@ ${COMPETITOR_CONTEXT}
 - 반드시 한국어로 작성한다.
 
 ## 출력 형식
-다른 설명 없이 아래 JSON 스키마만 정확히 출력하세요(마크다운 코드펜스 없이 순수 JSON, 전체를 한 줄로 — 문자열 값 내부에 실제 줄바꿈 문자를 넣지 말고 필요하면 공백이나 </p><p>로 문단을 구분할 것):
-{
-  "lede": "리포트 핵심 발견을 1~2문장으로 요약 (커버 페이지에 노출됨)",
-  "sections": [
-    { "title": "섹션 제목(예: 네이버 조사)", "html": "섹션 본문 HTML" },
-    ... 총 4~5개 섹션 (네이버 조사 / 구글·시장 맥락 / 갭 분석 / 개선 제안 / 경쟁사 대조 순서 권장, 데이터가 부족한 섹션은 생략 가능)
-  ],
-  "sources": [ { "title": "출처 제목", "url": "링크" }, ... 원시 데이터에 실제 있는 링크만 사용 ]
-}
+JSON이 아니라 아래 구분자 포맷으로만 출력하세요. 다른 설명·인사말·코드펜스 없이 이 포맷만 그대로 따르세요.
+구분자 줄(<<<로 시작하는 줄)은 정확히 이 형태를 지키고, 그 사이 본문에는 순수 HTML을 이스케이프 없이 그대로 작성합니다
+(HTML 속성에 큰따옴표를 자유롭게 써도 됩니다 — JSON이 아니므로 이스케이프가 필요 없습니다).
 
-## html 필드 작성 규칙 (아래 클래스만 사용, 인라인 style 금지)
+<<<LEDE>>>
+리포트 핵심 발견을 1~2문장으로 요약 (한 문단, 줄바꿈 없이)
+<<<SECTION:섹션 제목1>>>
+섹션 본문 HTML (여러 줄 가능)
+<<<SECTION:섹션 제목2>>>
+섹션 본문 HTML
+<<<SOURCES>>>
+출처 제목1|https://링크1
+출처 제목2|https://링크2
+<<<END>>>
+
+- 섹션은 4~5개 (네이버 조사 / 구글·시장 맥락 / 갭 분석 / 개선 제안 / 경쟁사 대조 순서 권장, 데이터가 부족한 섹션은 생략 가능)
+- <<<SOURCES>>> 블록은 원시 데이터에 실제 있는 링크만, 한 줄에 "제목|URL" 형식으로 나열 (출처가 없으면 이 블록 자체를 생략)
+- <<<END>>>으로 반드시 마무리
+
+## 섹션 본문 HTML 작성 규칙 (아래 클래스만 사용, 인라인 style 금지)
 - 일반 문단: <p>...</p>
 - 한 줄 핵심 지표: <div class="stat-line ok|warn|neutral">확정 노출 <b>3건 / 20건</b></div> (ok=긍정적, warn=부정적/취약, neutral=중립)
 - 표: 반드시 <div class="table-scroll"><table><thead>...<tbody>...</table></div>로 감싸고, 숫자 칸에는 <td class="num">
@@ -181,64 +190,43 @@ ${JSON.stringify(raw, null, 2)}`;
   // 먼저 오는 경우가 있다 — 타입으로 실제 텍스트 블록을 찾아야 한다(위에서 disabled를 요청했지만 방어적으로 유지).
   const textBlock = (data.content || []).find((b) => b.type === "text");
   const text = textBlock?.text || "";
-  const start = text.indexOf("{");
-  const end = text.lastIndexOf("}");
-  if (start === -1 || end === -1) throw new Error("Claude 응답에서 JSON을 찾지 못했습니다.");
-
-  const jsonSlice = sanitizeJsonStrings(text.slice(start, end + 1));
-  try {
-    return JSON.parse(jsonSlice);
-  } catch (e) {
-    throw new Error(`Claude 응답 JSON 파싱 실패: ${e.message}`);
-  }
+  return parseDelimitedReport(text);
 }
 
-// JSON 문자열 값 내부에 실제 제어문자(줄바꿈 등)가 그대로 섞여 있으면 JSON.parse가 깨진다.
-// 구조(따옴표 밖)는 건드리지 않고, 따옴표 안에서만 제어문자를 이스케이프 형태로 치환한다.
-function sanitizeJsonStrings(s) {
-  let out = "";
-  let inStr = false;
-  let esc = false;
-  for (let i = 0; i < s.length; i++) {
-    const ch = s[i];
-    if (inStr) {
-      if (esc) {
-        out += ch;
-        esc = false;
-        continue;
-      }
-      if (ch === "\\") {
-        out += ch;
-        esc = true;
-        continue;
-      }
-      if (ch === '"') {
-        inStr = false;
-        out += ch;
-        continue;
-      }
-      if (ch === "\n") {
-        out += "\\n";
-        continue;
-      }
-      if (ch === "\r") {
-        continue;
-      }
-      if (ch === "\t") {
-        out += "\\t";
-        continue;
-      }
-      out += ch;
-    } else {
-      if (ch === '"') {
-        inStr = true;
-        out += ch;
-        continue;
-      }
-      out += ch;
+// JSON 대신 <<<...>>> 구분자 포맷을 파싱한다 — 섹션 본문은 순수 HTML이라 JSON
+// 이스케이핑(특히 속성 큰따옴표) 문제가 원천적으로 없다.
+function parseDelimitedReport(text) {
+  const ledeMatch = text.match(/<<<LEDE>>>([\s\S]*?)(?=<<<SECTION:|<<<SOURCES>>>|<<<END>>>|$)/);
+  const lede = (ledeMatch?.[1] || "").trim();
+
+  const sections = [];
+  const sectionRe = /<<<SECTION:([^>]*)>>>([\s\S]*?)(?=<<<SECTION:|<<<SOURCES>>>|<<<END>>>|$)/g;
+  let m;
+  while ((m = sectionRe.exec(text)) !== null) {
+    const title = m[1].trim();
+    const html = m[2].trim();
+    if (title && html) sections.push({ title, html });
+  }
+
+  const sources = [];
+  const sourcesMatch = text.match(/<<<SOURCES>>>([\s\S]*?)(?=<<<END>>>|$)/);
+  if (sourcesMatch) {
+    for (const line of sourcesMatch[1].split("\n")) {
+      const l = line.trim();
+      if (!l) continue;
+      const idx = l.lastIndexOf("|");
+      if (idx === -1) continue;
+      const title = l.slice(0, idx).trim();
+      const url = l.slice(idx + 1).trim();
+      if (title && url) sources.push({ title, url });
     }
   }
-  return out;
+
+  if (sections.length === 0) {
+    throw new Error("Claude 응답에서 섹션을 찾지 못했습니다. (원문 앞부분: " + text.slice(0, 200) + ")");
+  }
+
+  return { lede, sections, sources };
 }
 
 function renderReportHtml(keyword, dateStr, report) {
