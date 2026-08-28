@@ -121,8 +121,8 @@ ${BRAND_CONTEXT}
 ${COMPETITOR_CONTEXT}
 
 ## 작업
-주어진 키워드에 대한 네이버 검색 원시 데이터(블로그/카페/지식iN/지역검색/검색광고 절대검색량)를 분석해서
-로담한의원 브랜드의 노출 현황과 경쟁 구도, 개선 제안을 도출하세요.
+주어진 키워드에 대한 네이버 검색 원시 데이터(블로그/카페/지식iN/지역검색/검색광고 절대검색량/웹문서검색)를
+분석해서 로담한의원 브랜드의 노출 현황과 경쟁 구도, 개선 제안을 도출하세요.
 
 ## 원칙
 - 응답 시간 제약이 있으니 간결하게 작성한다. 섹션당 본문은 2~4개 문단/요소 이내로, 전체 5개 섹션을 넘기지 않는다.
@@ -130,6 +130,9 @@ ${COMPETITOR_CONTEXT}
 - "확정 노출"(로담 또는 지점명이 본문/제목에 명시된 글)과 "추정 노출"(브랜드명 없이 정황상 로담 관련 가능성이 있는 글, 확인 필요로 표시)을 구분한다.
 - 원시 데이터에 없는 사실은 만들어내지 않는다. 근거가 부족하면 "확인 필요"라고 명시한다.
 - 반드시 한국어로 작성한다.
+- 실제 구글 검색은 이 자동화 파이프라인에서 호출할 수 없다. naver_webkr_as_web_context는 네이버
+  오픈API의 "웹문서검색"(네이버 자체 웹 인덱스) 결과로, 구글 검색 결과를 대체하는 근사치다. 이 데이터로
+  섹션을 작성할 때는 반드시 "네이버 웹문서검색 기준"이라고 명시하고, 구글 조사라고 단정하지 말 것.
 
 ## 출력 형식
 JSON이 아니라 아래 구분자 포맷으로만 출력하세요. 다른 설명·인사말·코드펜스 없이 이 포맷만 그대로 따르세요.
@@ -147,7 +150,7 @@ JSON이 아니라 아래 구분자 포맷으로만 출력하세요. 다른 설�
 출처 제목2|https://링크2
 <<<END>>>
 
-- 섹션은 4~5개 (네이버 조사 / 구글·시장 맥락 / 갭 분석 / 개선 제안 / 경쟁사 대조 순서 권장, 데이터가 부족한 섹션은 생략 가능)
+- 섹션은 4~5개 (네이버 조사 / 웹문서검색·시장 맥락(=구글 대체, naver_webkr_as_web_context 기반) / 갭 분석 / 개선 제안 / 경쟁사 대조 순서 권장, 데이터가 부족한 섹션은 생략 가능)
 - <<<SOURCES>>> 블록은 원시 데이터에 실제 있는 링크만, 한 줄에 "제목|URL" 형식으로 나열 (출처가 없으면 이 블록 자체를 생략)
 - <<<END>>>으로 반드시 마무리
 
@@ -426,7 +429,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const [blog, cafe, kin, local, brandBlog, brandCafe, searchAd] = await Promise.all([
+    const [blog, cafe, kin, local, brandBlog, brandCafe, searchAd, webkr] = await Promise.all([
       naverSearch("blog", keyword, 15, "sim"),
       naverSearch("cafearticle", keyword, 15, "sim"),
       naverSearch("kin", keyword, 10, "sim"),
@@ -434,6 +437,7 @@ export default async function handler(req, res) {
       naverSearch("blog", `로담한의원 ${keyword}`, 10, "sim"),
       naverSearch("cafearticle", `로담한의원 ${keyword}`, 10, "sim"),
       naverSearchAdVolume([keyword, "로담한의원", "새살침"]),
+      naverSearch("webkr", keyword, 15, "sim"),
     ]);
 
     const raw = {
@@ -445,6 +449,9 @@ export default async function handler(req, res) {
       naver_blog_brand_qualified: brandBlog,
       naver_cafe_brand_qualified: brandCafe,
       naver_searchad_volume: searchAd,
+      // 실제 구글 검색은 서버리스 환경에서 호출할 수 없어, 네이버 오픈API의 "웹문서검색"으로
+      // 대체한다 — 네이버 자체 웹 인덱스라 구글과 결과가 다를 수 있음을 리포트에서 명시할 것.
+      naver_webkr_as_web_context: webkr,
     };
 
     const report = await callClaude(keyword, raw);
