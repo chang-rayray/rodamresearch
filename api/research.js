@@ -7,6 +7,7 @@
 //   NAVER_CLIENT_ID, NAVER_CLIENT_SECRET       — 네이버 오픈API(검색)
 //   NAVER_AD_API_KEY, NAVER_AD_SECRET_KEY, NAVER_AD_CUSTOMER_ID — 네이버 검색광고 API
 //   ANTHROPIC_API_KEY                          — Claude API
+//   GOOGLE_CSE_KEY, GOOGLE_CSE_CX              — Google Custom Search API (선택, 없으면 구글 섹션 생략)
 
 import { createHmac } from "node:crypto";
 
@@ -59,6 +60,38 @@ async function naverSearch(kind, query, display, sort) {
       description: stripHtml(it.description).slice(0, 160),
       link: it.link,
       source: it.bloggername || it.cafename || undefined,
+    }));
+    return { items };
+  } catch (e) {
+    return { items: [], error: String(e) };
+  }
+}
+
+async function googleSearch(query, num) {
+  const key = process.env.GOOGLE_CSE_KEY;
+  const cx = process.env.GOOGLE_CSE_CX;
+  if (!key || !cx) return { items: [], error: "missing_credentials" };
+
+  const params = new URLSearchParams({
+    key,
+    cx,
+    q: query,
+    num: String(Math.min(num, 10)),
+    hl: "ko",
+    gl: "kr",
+  });
+  try {
+    const res = await fetch(`https://www.googleapis.com/customsearch/v1?${params.toString()}`);
+    if (!res.ok) {
+      const t = await res.text();
+      return { items: [], error: `http_${res.status}: ${t.slice(0, 200)}` };
+    }
+    const data = await res.json();
+    const items = (data.items || []).map((it) => ({
+      title: it.title,
+      description: (it.snippet || "").slice(0, 200),
+      link: it.link,
+      source: it.displayLink,
     }));
     return { items };
   } catch (e) {
@@ -121,8 +154,9 @@ ${BRAND_CONTEXT}
 ${COMPETITOR_CONTEXT}
 
 ## 작업
-주어진 키워드에 대한 네이버 검색 원시 데이터(블로그/카페/지식iN/지역검색/검색광고 절대검색량/웹문서검색)를
-분석해서 로담한의원 브랜드의 노출 현황과 경쟁 구도, 개선 제안을 도출하세요.
+주어진 키워드에 대한 원시 데이터(네이버 블로그/카페/지식iN/지역검색/검색광고 절대검색량/웹문서검색,
+그리고 실제 구글 검색 결과)를 분석해서 로담한의원 브랜드의 노출 현황과 경쟁 구도, 개선 제안을
+도출하세요.
 
 ## 원칙
 - 응답 시간 제약이 있으니 간결하게 작성한다. 섹션당 본문은 2~4개 문단/요소 이내로, 전체 5개 섹션을 넘기지 않는다.
@@ -130,9 +164,10 @@ ${COMPETITOR_CONTEXT}
 - "확정 노출"(로담 또는 지점명이 본문/제목에 명시된 글)과 "추정 노출"(브랜드명 없이 정황상 로담 관련 가능성이 있는 글, 확인 필요로 표시)을 구분한다.
 - 원시 데이터에 없는 사실은 만들어내지 않는다. 근거가 부족하면 "확인 필요"라고 명시한다.
 - 반드시 한국어로 작성한다.
-- 실제 구글 검색은 이 자동화 파이프라인에서 호출할 수 없다. naver_webkr_as_web_context는 네이버
-  오픈API의 "웹문서검색"(네이버 자체 웹 인덱스) 결과로, 구글 검색 결과를 대체하는 근사치다. 이 데이터로
-  섹션을 작성할 때는 반드시 "네이버 웹문서검색 기준"이라고 명시하고, 구글 조사라고 단정하지 말 것.
+- naver_webkr(네이버 웹문서검색)과 google_keyword_only/google_brand_qualified(실제 구글 검색)는
+  서로 다른 채널이니 섞어서 "구글 조사 결과"로 뭉뚱그리지 말고 별도로 명시할 것. google_* 데이터에
+  error: "missing_credentials"가 있으면 구글 검색이 아직 설정되지 않은 것이니, 그 부분은 "구글 검색
+  미설정(자격증명 없음)"이라고 명시하고 naver_webkr만으로 웹 맥락을 서술할 것.
 
 ## 출력 형식
 JSON이 아니라 아래 구분자 포맷으로만 출력하세요. 다른 설명·인사말·코드펜스 없이 이 포맷만 그대로 따르세요.
@@ -150,7 +185,7 @@ JSON이 아니라 아래 구분자 포맷으로만 출력하세요. 다른 설�
 출처 제목2|https://링크2
 <<<END>>>
 
-- 섹션은 4~5개 (네이버 조사 / 웹문서검색·시장 맥락(=구글 대체, naver_webkr_as_web_context 기반) / 갭 분석 / 개선 제안 / 경쟁사 대조 순서 권장, 데이터가 부족한 섹션은 생략 가능)
+- 섹션은 4~6개 (네이버 조사 / 네이버 웹문서검색·구글 조사 / 갭 분석 / 개선 제안 / 경쟁사 대조 순서 권장, 데이터가 부족한 섹션은 생략 가능)
 - <<<SOURCES>>> 블록은 원시 데이터에 실제 있는 링크만, 한 줄에 "제목|URL" 형식으로 나열 (출처가 없으면 이 블록 자체를 생략)
 - <<<END>>>으로 반드시 마무리
 
@@ -282,7 +317,7 @@ function renderReportHtml(keyword, dateStr, report) {
     <h1>${escapeHtml(keyword)}</h1>
     <div class="meta-row">
       <span class="chip">조사일자 <b>${dateStr}</b></span>
-      <span class="chip">채널 <b>네이버 · SearchAd · AI 합성</b></span>
+      <span class="chip">채널 <b>네이버 · 구글 · SearchAd · AI 합성</b></span>
       <span class="chip">대상 <b>로담한의원 9개 지점</b></span>
     </div>
     <p class="lede">${escapeHtml(report.lede || "")}</p>
@@ -412,6 +447,8 @@ export default async function handler(req, res) {
         NAVER_AD_API_KEY: !!process.env.NAVER_AD_API_KEY,
         NAVER_AD_SECRET_KEY: !!process.env.NAVER_AD_SECRET_KEY,
         NAVER_AD_CUSTOMER_ID: !!process.env.NAVER_AD_CUSTOMER_ID,
+        GOOGLE_CSE_KEY: !!process.env.GOOGLE_CSE_KEY,
+        GOOGLE_CSE_CX: !!process.env.GOOGLE_CSE_CX,
       },
       note: "값은 노출하지 않고 설정 여부(true/false)만 표시합니다. false인 항목은 이 Vercel 프로젝트의 현재 배포에 해당 환경변수가 전달되지 않은 것입니다 — Settings에서 등록/환경 범위 확인 후 Redeploy 필요.",
     });
@@ -429,7 +466,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const [blog, cafe, kin, local, brandBlog, brandCafe, searchAd, webkr] = await Promise.all([
+    const [blog, cafe, kin, local, brandBlog, brandCafe, searchAd, webkr, google, googleBrand] = await Promise.all([
       naverSearch("blog", keyword, 15, "sim"),
       naverSearch("cafearticle", keyword, 15, "sim"),
       naverSearch("kin", keyword, 10, "sim"),
@@ -438,6 +475,8 @@ export default async function handler(req, res) {
       naverSearch("cafearticle", `로담한의원 ${keyword}`, 10, "sim"),
       naverSearchAdVolume([keyword, "로담한의원", "새살침"]),
       naverSearch("webkr", keyword, 15, "sim"),
+      googleSearch(keyword, 10),
+      googleSearch(`로담한의원 ${keyword}`, 10),
     ]);
 
     const raw = {
@@ -449,9 +488,12 @@ export default async function handler(req, res) {
       naver_blog_brand_qualified: brandBlog,
       naver_cafe_brand_qualified: brandCafe,
       naver_searchad_volume: searchAd,
-      // 실제 구글 검색은 서버리스 환경에서 호출할 수 없어, 네이버 오픈API의 "웹문서검색"으로
-      // 대체한다 — 네이버 자체 웹 인덱스라 구글과 결과가 다를 수 있음을 리포트에서 명시할 것.
-      naver_webkr_as_web_context: webkr,
+      // 네이버 오픈API의 "웹문서검색"(네이버 자체 웹 인덱스) — 구글과는 별개 채널로 병기.
+      naver_webkr: webkr,
+      // 실제 구글 검색 결과(Google Custom Search API). 자격증명이 없으면 error: "missing_credentials"로
+      // 빈 배열이 온다 — 이 경우 구글 섹션은 생략하거나 "구글 조사 미설정"으로 명시할 것.
+      google_keyword_only: google,
+      google_brand_qualified: googleBrand,
     };
 
     const report = await callClaude(keyword, raw);
