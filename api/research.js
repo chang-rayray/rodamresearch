@@ -175,7 +175,10 @@ ${JSON.stringify(raw, null, 2)}`;
     throw new Error(`Anthropic API 오류 ${res.status}: ${t.slice(0, 300)}`);
   }
   const data = await res.json();
-  const text = data.content?.[0]?.text || "";
+  // 이 모델은 extended thinking이 기본 활성화되어 content[0]이 "thinking" 블록으로 먼저 오고
+  // 그 다음에 "text" 블록이 온다 — 타입으로 실제 텍스트 블록을 찾아야 한다.
+  const textBlock = (data.content || []).find((b) => b.type === "text");
+  const text = textBlock?.text || "";
   const start = text.indexOf("{");
   const end = text.lastIndexOf("}");
   if (start === -1 || end === -1) throw new Error("Claude 응답에서 JSON을 찾지 못했습니다.");
