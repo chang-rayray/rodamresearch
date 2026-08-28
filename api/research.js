@@ -125,6 +125,7 @@ ${COMPETITOR_CONTEXT}
 로담한의원 브랜드의 노출 현황과 경쟁 구도, 개선 제안을 도출하세요.
 
 ## 원칙
+- 응답 시간 제약이 있으니 간결하게 작성한다. 섹션당 본문은 2~4개 문단/요소 이내로, 전체 5개 섹션을 넘기지 않는다.
 - 숫자는 원시 데이터에 있는 그대로만 인용하고 반올림하거나 지어내지 않는다.
 - "확정 노출"(로담 또는 지점명이 본문/제목에 명시된 글)과 "추정 노출"(브랜드명 없이 정황상 로담 관련 가능성이 있는 글, 확인 필요로 표시)을 구분한다.
 - 원시 데이터에 없는 사실은 만들어내지 않는다. 근거가 부족하면 "확인 필요"라고 명시한다.
@@ -164,7 +165,7 @@ ${JSON.stringify(raw, null, 2)}`;
     },
     body: JSON.stringify({
       model: "claude-sonnet-5",
-      max_tokens: 8000,
+      max_tokens: 4500,
       thinking: { type: "disabled" },
       system,
       messages: [{ role: "user", content: user }],

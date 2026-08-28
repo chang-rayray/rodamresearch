@@ -93,7 +93,7 @@
 
   <div class="runner">
     <h2>새 키워드 조사</h2>
-    <p class="sub">예: 대상포진흉터, 여드름흉터, 켈로이드치료 — 조사에는 20~40초 정도 걸립니다.</p>
+    <p class="sub">예: 대상포진흉터, 여드름흉터, 켈로이드치료 — 조사에는 1~2분 정도 걸립니다.</p>
     <form id="research-form">
       <input type="text" id="keyword-input" name="keyword" placeholder="조사할 키워드 입력" maxlength="40" required autocomplete="off">
       <button type="submit" id="run-btn">조사 시작</button>
@@ -197,7 +197,7 @@
   var lastHtml = null;
   var lastKeyword = null;
 
-  var steps = ['네이버 데이터 수집 중...', 'AI가 리포트 작성 중... (최대 40초 소요)'];
+  var steps = ['네이버 데이터 수집 중...', 'AI가 리포트 작성 중... (최대 2분 소요)'];
 
   form.addEventListener('submit', async function(e){
     e.preventDefault();
