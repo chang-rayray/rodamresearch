@@ -131,7 +131,7 @@ ${COMPETITOR_CONTEXT}
 - 반드시 한국어로 작성한다.
 
 ## 출력 형식
-다른 설명 없이 아래 JSON 스키마만 정확히 출력하세요(마크다운 코드펜스 없이 순수 JSON):
+다른 설명 없이 아래 JSON 스키마만 정확히 출력하세요(마크다운 코드펜스 없이 순수 JSON, 전체를 한 줄로 — 문자열 값 내부에 실제 줄바꿈 문자를 넣지 말고 필요하면 공백이나 </p><p>로 문단을 구분할 것):
 {
   "lede": "리포트 핵심 발견을 1~2문장으로 요약 (커버 페이지에 노출됨)",
   "sections": [
@@ -165,6 +165,7 @@ ${JSON.stringify(raw, null, 2)}`;
     body: JSON.stringify({
       model: "claude-sonnet-5",
       max_tokens: 8000,
+      thinking: { type: "disabled" },
       system,
       messages: [{ role: "user", content: user }],
     }),
@@ -175,14 +176,68 @@ ${JSON.stringify(raw, null, 2)}`;
     throw new Error(`Anthropic API 오류 ${res.status}: ${t.slice(0, 300)}`);
   }
   const data = await res.json();
-  // 이 모델은 extended thinking이 기본 활성화되어 content[0]이 "thinking" 블록으로 먼저 오고
-  // 그 다음에 "text" 블록이 온다 — 타입으로 실제 텍스트 블록을 찾아야 한다.
+  // 이 모델은 extended thinking이 기본 활성화될 수 있어 content[0]이 "thinking" 블록으로
+  // 먼저 오는 경우가 있다 — 타입으로 실제 텍스트 블록을 찾아야 한다(위에서 disabled를 요청했지만 방어적으로 유지).
   const textBlock = (data.content || []).find((b) => b.type === "text");
   const text = textBlock?.text || "";
   const start = text.indexOf("{");
   const end = text.lastIndexOf("}");
   if (start === -1 || end === -1) throw new Error("Claude 응답에서 JSON을 찾지 못했습니다.");
-  return JSON.parse(text.slice(start, end + 1));
+
+  const jsonSlice = sanitizeJsonStrings(text.slice(start, end + 1));
+  try {
+    return JSON.parse(jsonSlice);
+  } catch (e) {
+    throw new Error(`Claude 응답 JSON 파싱 실패: ${e.message}`);
+  }
+}
+
+// JSON 문자열 값 내부에 실제 제어문자(줄바꿈 등)가 그대로 섞여 있으면 JSON.parse가 깨진다.
+// 구조(따옴표 밖)는 건드리지 않고, 따옴표 안에서만 제어문자를 이스케이프 형태로 치환한다.
+function sanitizeJsonStrings(s) {
+  let out = "";
+  let inStr = false;
+  let esc = false;
+  for (let i = 0; i < s.length; i++) {
+    const ch = s[i];
+    if (inStr) {
+      if (esc) {
+        out += ch;
+        esc = false;
+        continue;
+      }
+      if (ch === "\\") {
+        out += ch;
+        esc = true;
+        continue;
+      }
+      if (ch === '"') {
+        inStr = false;
+        out += ch;
+        continue;
+      }
+      if (ch === "\n") {
+        out += "\\n";
+        continue;
+      }
+      if (ch === "\r") {
+        continue;
+      }
+      if (ch === "\t") {
+        out += "\\t";
+        continue;
+      }
+      out += ch;
+    } else {
+      if (ch === '"') {
+        inStr = true;
+        out += ch;
+        continue;
+      }
+      out += ch;
+    }
+  }
+  return out;
 }
 
 function renderReportHtml(keyword, dateStr, report) {
