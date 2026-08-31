@@ -47,15 +47,20 @@
   h1{ font-family:"Noto Serif KR",serif; font-weight:700; font-size:clamp(28px,4.5vw,40px); line-height:1.3; letter-spacing:-.01em; margin:0 0 14px; text-wrap:balance; }
   .lede{ font-size:16.5px; color:var(--muted); max-width:64ch; margin:0; }
   .group{ margin-bottom:40px; }
-  .group h2{ font-family:"Noto Serif KR",serif; font-size:15px; font-weight:600; color:var(--muted); margin:0 0 14px; padding-bottom:8px; border-bottom:1px solid var(--line); }
-  .cards{ display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:14px; }
-  .card{ display:block; text-decoration:none; color:var(--ink); border:1px solid var(--line); border-radius:10px; padding:18px 20px; background:var(--paper-raised); box-shadow:var(--shadow); transition:border-color .15s ease, transform .15s ease; }
-  .card:hover{ border-color:var(--jade); transform:translateY(-1px); }
-  .card .kw{ font-family:"Noto Serif KR",serif; font-weight:600; font-size:17px; margin-bottom:6px; display:block; }
-  .card .meta{ font-family:"JetBrains Mono",monospace; font-size:11.5px; color:var(--faint); display:flex; align-items:center; gap:8px; }
-  .card .badge{ font-size:10.5px; font-weight:700; padding:2px 7px; border-radius:5px; background:var(--jade-soft); color:var(--jade-strong); }
-  .card.md-only .badge{ background:var(--paper-sunken); color:var(--muted); }
-  .card.md-only{ opacity:.72; }
+  .group h2{ font-family:"Noto Serif KR",serif; font-size:15px; font-weight:600; color:var(--muted); margin:0 0 4px; }
+  .group .group-sub{ font-size:12.5px; color:var(--faint); margin:0 0 14px; }
+  .board{ border:1px solid var(--line); border-radius:12px; overflow:hidden; background:var(--paper-raised); box-shadow:var(--shadow); }
+  .board-head{ display:grid; grid-template-columns:56px 1fr 110px; gap:12px; padding:11px 20px; font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.04em; text-transform:uppercase; color:var(--muted); background:var(--paper-sunken); border-bottom:1px solid var(--line); }
+  .board-row{ display:grid; grid-template-columns:56px 1fr 110px; gap:12px; align-items:center; padding:14px 20px; text-decoration:none; color:var(--ink); border-bottom:1px solid var(--line); transition:background .12s ease; }
+  .board-row:last-child{ border-bottom:none; }
+  a.board-row:hover{ background:var(--jade-soft); }
+  .board-row .idx{ font-family:"JetBrains Mono",monospace; font-size:13px; color:var(--faint); }
+  .board-row .kw{ font-family:"Noto Serif KR",serif; font-weight:600; font-size:15.5px; display:flex; align-items:center; gap:9px; min-width:0; }
+  .board-row .kw span.text{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .board-row .date{ font-family:"JetBrains Mono",monospace; font-size:12.5px; color:var(--faint); text-align:right; font-variant-numeric:tabular-nums; }
+  .board-row.disabled{ color:var(--faint); cursor:default; }
+  .board-row.disabled .kw{ color:var(--faint); }
+  .pending-tag{ font-family:"JetBrains Mono",monospace; font-size:10px; font-weight:700; padding:2px 7px; border-radius:5px; background:var(--paper-sunken); color:var(--faint); flex:none; }
   footer{ margin-top:64px; padding-top:20px; border-top:1px solid var(--line); color:var(--faint); font-size:12.5px; }
 
   .runner{ margin-bottom:48px; padding:26px 28px; border:1px solid var(--line); border-radius:14px; background:var(--paper-raised); box-shadow:var(--shadow); }
@@ -114,71 +119,29 @@
   </div>
 
   <div class="group">
-    <h2>HTML 리포트 (가독성 버전 제공)</h2>
-    <div class="cards">
-      <a class="card" href="outputs/대상포진흉터_20260827.html">
-        <span class="kw">대상포진흉터</span>
-        <span class="meta"><span class="badge">HTML</span>2026-08-27</span>
-      </a>
-      <a class="card" href="outputs/편평사마귀_치료법_20260825.html">
-        <span class="kw">편평사마귀 치료법</span>
-        <span class="meta"><span class="badge">HTML</span>2026-08-25</span>
-      </a>
-      <a class="card" href="outputs/코라테라피_20260825.html">
-        <span class="kw">코라테라피</span>
-        <span class="meta"><span class="badge">HTML</span>2026-08-25</span>
-      </a>
-      <a class="card" href="outputs/롤링성흉터치료_20260825.html">
-        <span class="kw">롤링성흉터치료</span>
-        <span class="meta"><span class="badge">HTML</span>2026-08-25</span>
-      </a>
-      <a class="card" href="outputs/성형수술흉터_20260826.html">
-        <span class="kw">성형수술흉터</span>
-        <span class="meta"><span class="badge">HTML</span>2026-08-26</span>
-      </a>
-      <a class="card" href="outputs/수두흉터치료_20260826.html">
-        <span class="kw">수두흉터치료</span>
-        <span class="meta"><span class="badge">HTML</span>2026-08-26</span>
-      </a>
-    </div>
-  </div>
-
-  <div class="group">
-    <h2>MD 전용 리포트</h2>
-    <div class="cards">
-      <a class="card md-only" href="outputs/여드름흉터한의원_20260824.md">
-        <span class="kw">여드름흉터한의원</span>
-        <span class="meta"><span class="badge">MD</span>2026-08-24</span>
-      </a>
-      <a class="card md-only" href="outputs/성형수술흉터_20260825.md">
-        <span class="kw">성형수술흉터 (초회)</span>
-        <span class="meta"><span class="badge">MD</span>2026-08-25</span>
-      </a>
-      <a class="card md-only" href="outputs/여드름흉터치료_20260824.md">
-        <span class="kw">여드름흉터치료</span>
-        <span class="meta"><span class="badge">MD</span>2026-08-24</span>
-      </a>
-      <a class="card md-only" href="outputs/신규서비스_시장진입_20260824.md">
-        <span class="kw">신규서비스 시장진입</span>
-        <span class="meta"><span class="badge">MD</span>2026-08-24</span>
-      </a>
-      <a class="card md-only" href="outputs/새살침_20260824.md">
-        <span class="kw">새살침</span>
-        <span class="meta"><span class="badge">MD</span>2026-08-24</span>
-      </a>
-      <a class="card md-only" href="outputs/여드름흉터제거_20260823.md">
-        <span class="kw">여드름흉터제거</span>
-        <span class="meta"><span class="badge">MD</span>2026-08-23</span>
-      </a>
-      <a class="card md-only" href="outputs/수두흉터_20260823.md">
-        <span class="kw">수두흉터</span>
-        <span class="meta"><span class="badge">MD</span>2026-08-23</span>
-      </a>
+    <h2>조사한 키워드 목록</h2>
+    <p class="group-sub">HTML 리포트가 준비된 키워드만 클릭해서 열람할 수 있습니다.</p>
+    <div class="board">
+      <div class="board-head"><span>번호</span><span>키워드</span><span style="text-align:right">조사일</span></div>
+      <a class="board-row" href="outputs/대상포진한의원_20260828.html"><span class="idx">01</span><span class="kw"><span class="text">대상포진한의원</span></span><span class="date">2026-08-28</span></a>
+      <a class="board-row" href="outputs/대상포진흉터_20260827.html"><span class="idx">02</span><span class="kw"><span class="text">대상포진흉터</span></span><span class="date">2026-08-27</span></a>
+      <a class="board-row" href="outputs/수두흉터치료_20260826.html"><span class="idx">03</span><span class="kw"><span class="text">수두흉터치료</span></span><span class="date">2026-08-26</span></a>
+      <a class="board-row" href="outputs/성형수술흉터_20260826.html"><span class="idx">04</span><span class="kw"><span class="text">성형수술흉터</span></span><span class="date">2026-08-26</span></a>
+      <a class="board-row" href="outputs/코라테라피_20260825.html"><span class="idx">05</span><span class="kw"><span class="text">코라테라피</span></span><span class="date">2026-08-25</span></a>
+      <a class="board-row" href="outputs/편평사마귀_치료법_20260825.html"><span class="idx">06</span><span class="kw"><span class="text">편평사마귀 치료법</span></span><span class="date">2026-08-25</span></a>
+      <a class="board-row" href="outputs/롤링성흉터치료_20260825.html"><span class="idx">07</span><span class="kw"><span class="text">롤링성흉터치료</span></span><span class="date">2026-08-25</span></a>
+      <div class="board-row disabled"><span class="idx">08</span><span class="kw"><span class="text">성형수술흉터 (초회)</span><span class="pending-tag">준비중</span></span><span class="date">2026-08-25</span></div>
+      <div class="board-row disabled"><span class="idx">09</span><span class="kw"><span class="text">여드름흉터한의원</span><span class="pending-tag">준비중</span></span><span class="date">2026-08-24</span></div>
+      <div class="board-row disabled"><span class="idx">10</span><span class="kw"><span class="text">여드름흉터치료</span><span class="pending-tag">준비중</span></span><span class="date">2026-08-24</span></div>
+      <div class="board-row disabled"><span class="idx">11</span><span class="kw"><span class="text">신규서비스 시장진입</span><span class="pending-tag">준비중</span></span><span class="date">2026-08-24</span></div>
+      <div class="board-row disabled"><span class="idx">12</span><span class="kw"><span class="text">새살침</span><span class="pending-tag">준비중</span></span><span class="date">2026-08-24</span></div>
+      <div class="board-row disabled"><span class="idx">13</span><span class="kw"><span class="text">여드름흉터제거</span><span class="pending-tag">준비중</span></span><span class="date">2026-08-23</span></div>
+      <div class="board-row disabled"><span class="idx">14</span><span class="kw"><span class="text">수두흉터</span><span class="pending-tag">준비중</span></span><span class="date">2026-08-23</span></div>
     </div>
   </div>
 
   <footer>
-    researchcompany · keyword-market-research 스킬로 생성된 리포트 모음 · 신규 조사는 outputs/에 추가되는 대로 이 페이지에 카드가 추가됩니다.
+    researchcompany · keyword-market-research 스킬로 생성된 리포트 모음 · 신규 조사는 outputs/에 추가되는 대로 이 목록에 반영됩니다.
   </footer>
 </div>
 <script>
