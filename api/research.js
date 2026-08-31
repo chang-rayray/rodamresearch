@@ -9,8 +9,13 @@
 //   ANTHROPIC_API_KEY                          — Claude API
 
 import { createHmac } from "node:crypto";
+import { put } from "@vercel/blob";
 
 export const config = { runtime: "nodejs" };
+
+function sanitizeForFilename(s) {
+  return s.replace(/[\\/:*?"<>|]/g, "_").trim();
+}
 
 const BRAND_CONTEXT = `
 # 로담한의원 브랜드 팩트 (요약)
@@ -492,7 +497,23 @@ export default async function handler(req, res) {
     const dateStr = new Date().toISOString().slice(0, 10);
     const html = renderReportHtml(keyword, dateStr, report);
 
-    res.status(200).json({ ok: true, keyword, date: dateStr, html, raw });
+    // 대시보드 목록에 남기기 위해 Vercel Blob에 저장(같은 키워드+날짜면 덮어씀).
+    // 저장 실패는 조사 자체를 실패시키지 않는다 — 사용자에게는 결과를 그대로 보여준다.
+    const pathname = `reports/${sanitizeForFilename(keyword)}_${dateStr}.html`;
+    let saved = false;
+    try {
+      await put(pathname, html, {
+        access: "private",
+        contentType: "text/html; charset=utf-8",
+        addRandomSuffix: false,
+        allowOverwrite: true,
+      });
+      saved = true;
+    } catch (e) {
+      console.error("blob save failed:", e.message);
+    }
+
+    res.status(200).json({ ok: true, keyword, date: dateStr, html, raw, saved, pathname: saved ? pathname : undefined });
   } catch (e) {
     res.status(500).json({ error: e.message || String(e) });
   }

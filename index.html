@@ -118,8 +118,16 @@
     <iframe id="result-frame" title="조사 결과 리포트"></iframe>
   </div>
 
+  <div class="group" id="dashboard-group" style="display:none">
+    <h2>대시보드에서 조사한 키워드</h2>
+    <p class="group-sub">이 사이트에서 직접 검색한 결과가 자동으로 쌓입니다.</p>
+    <div class="board" id="dashboard-board">
+      <div class="board-head"><span>번호</span><span>키워드</span><span style="text-align:right">조사일</span></div>
+    </div>
+  </div>
+
   <div class="group">
-    <h2>조사한 키워드 목록</h2>
+    <h2>스킬로 조사한 키워드 목록</h2>
     <p class="group-sub">HTML 리포트가 준비된 키워드만 클릭해서 열람할 수 있습니다.</p>
     <div class="board">
       <div class="board-head"><span>번호</span><span>키워드</span><span style="text-align:right">조사일</span></div>
@@ -162,6 +170,57 @@
 
   var steps = ['네이버 데이터 수집 중...', 'AI가 리포트 작성 중... (최대 2분 소요)'];
 
+  var dashboardGroup = document.getElementById('dashboard-group');
+  var dashboardBoard = document.getElementById('dashboard-board');
+
+  async function loadDashboardReports(){
+    try {
+      var res = await fetch('/api/reports');
+      var data = await res.json();
+      if(!res.ok || !data.items) return;
+
+      while(dashboardBoard.children.length > 1){
+        dashboardBoard.removeChild(dashboardBoard.lastChild);
+      }
+      if(data.items.length === 0){
+        dashboardGroup.style.display = 'none';
+        return;
+      }
+      dashboardGroup.style.display = '';
+      data.items.forEach(function(item, i){
+        var row = document.createElement('a');
+        row.className = 'board-row';
+        row.href = '/api/report?path=' + encodeURIComponent(item.pathname);
+        row.target = '_blank';
+        row.rel = 'noopener';
+
+        var idx = document.createElement('span');
+        idx.className = 'idx';
+        idx.textContent = String(i + 1).padStart(2, '0');
+
+        var kw = document.createElement('span');
+        kw.className = 'kw';
+        var kwText = document.createElement('span');
+        kwText.className = 'text';
+        kwText.textContent = item.keyword;
+        kw.appendChild(kwText);
+
+        var date = document.createElement('span');
+        date.className = 'date';
+        date.textContent = item.date;
+
+        row.appendChild(idx);
+        row.appendChild(kw);
+        row.appendChild(date);
+        dashboardBoard.appendChild(row);
+      });
+    } catch (e) {
+      // 목록 로딩 실패는 조용히 무시 (대시보드 검색 자체엔 영향 없음)
+    }
+  }
+
+  loadDashboardReports();
+
   form.addEventListener('submit', async function(e){
     e.preventDefault();
     var keyword = input.value.trim();
@@ -189,6 +248,7 @@
       frame.srcdoc = data.html;
       resultBlock.style.display = '';
       resultBlock.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if(data.saved) loadDashboardReports();
     } catch (err) {
       errorBox.textContent = '조사 실패: ' + err.message;
       errorBox.classList.add('show');

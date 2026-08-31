@@ -18,3 +18,5 @@ node_modules/
 # 대시보드 디버깅용 임시 파일
 _req.json
 _test_result.*
+
+.env*
